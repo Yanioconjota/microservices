@@ -54,7 +54,27 @@ services:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - fastapi
+      
+  redis:
+    image: redis:6-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - default
 
+  redis-ui:
+    image: redis/redisinsight
+    container_name: redis-ui
+    ports:
+      - "8002:5540"
+    depends_on:
+      - redis
+    networks:
+      - default
 
 volumes:
   mongo-data:
+  redis-data:
